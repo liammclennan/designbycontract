@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DesignByContract</id>
+    <version>1.0.1</version>
+    <authors>Liam McLennan</authors>
+    <owners>liammclennan</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/liammclennan/designbycontract</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Basic design by contract support</description>
+    <releaseNotes>First release.</releaseNotes>
+    <copyright>Copyright 2013</copyright>
+    <tags>Dbc</tags>
+  </metadata>
+  <files>
+    <file src="Lib\bin\Release\*.dll" target="lib" />
+  </files>
+</package>
