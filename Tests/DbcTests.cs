@@ -1,12 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Givn;
 using NUnit.Framework;
 
 namespace DesignByContract.Tests
 {
+    [TestFixture]
+    public class NotNullOrEmpty
+    {
+        [Test]
+        public void WhenAValueIsNull()
+        {
+            Assert.Throws<DbcException>(() => Dbc.NotNullOrEmpty((string)null));
+        }
+        
+        [Test]
+        public void WhenAValueIsEmptyString()
+        {
+            Assert.Throws<DbcException>(() => Dbc.NotNullOrEmpty(""));
+        }
+        
+        [Test]
+        public void WhenAValueIsEmptyCollection()
+        {
+            Assert.Throws<DbcException>(() => Dbc.NotNullOrEmpty(new List<int>()));
+            Assert.Throws<DbcException>(() => Dbc.NotNullOrEmpty(new int[]{}));
+        }
+        
+        [Test]
+        public void WhenAValueIsNotEmpty()
+        {
+            Assert.DoesNotThrow(() => Dbc.NotNullOrEmpty("foo", "some message"));
+        }
+
+        [Test]
+        public void WhenACollectionIsNotEmpty()
+        {
+            Assert.DoesNotThrow(() => Dbc.NotNullOrEmpty(new int[] {1}, "some message"));
+        }
+
+        [Test]
+        public void WhenSomeValuesAreNullOrEmpty()
+        {
+            Assert.Throws<DbcException>(() => Dbc.NotNullOrEmpty(new string[] {"","foo"}));
+            Assert.Throws<DbcException>(() =>Dbc.NotNullOrEmpty(new string[] {"foo", null}));
+        }
+    }
+
+    [TestFixture]
+    public class NotNull
+    {
+        private object _value;
+        private object[] _vls;
+
+        [Test]
+        public void WhenAValueIsNull()
+        {
+            Giv.n(() => AValue(null));
+            Th.n(() => Assert.Throws<DbcException>(() => Dbc.NotNull(_value)));
+        }
+        
+        [Test]
+        public void WhenOneOfMultipleValuesIsNull()
+        {
+            Giv.n(() => Values("", 1, null));
+            Th.n(() => Assert.Throws<DbcException>(() => Dbc.NotNull(_vls, "message")));
+        }
+
+        private void Values(params object[] vls)
+        {
+            _vls = vls;
+        }
+
+        private void AValue(object o)
+        {
+            _value = o;
+        }
+    }
+
     [TestFixture]
     public class DbcTests
     {
